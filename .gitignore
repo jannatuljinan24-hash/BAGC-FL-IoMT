@@ -1,0 +1,28 @@
+# Jupyter
+.ipynb_checkpoints/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Large datasets and generated arrays
+*.csv
+*.npy
+*.npz
+
+# Saved preprocessing/model artifacts
+*.joblib
+*.keras
+*.h5
+*.weights.h5
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# Local environment folders
+.venv/
+venv/
+env/
