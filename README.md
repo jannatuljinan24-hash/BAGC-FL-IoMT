@@ -27,20 +27,6 @@ The study follows a progressive experimental workflow:
 
 ---
 
-## 🎓 Thesis Information
-
-| Item | Information |
-|---|---|
-| **Title** | BAGC-FL: A New Benign-Anchor Gradient-Correction-Oriented Federated Learning Approach for Medical IoT Intrusion Detection |
-| **Students** | Jannatul Jinan (UG02-61-22-012) and Jannatul Ferdouse Shifa (UG02-61-22-040) |
-| **Department** | Department of Computer Science and Engineering |
-| **University** | State University of Bangladesh |
-| **Supervisor** | Md. Alamgir Hossain, Assistant Professor, Department of CSE |
-| **Primary Research Area** | Federated Learning for IoMT Intrusion Detection |
-| **Proposed Method** | BAGC-FL |
-
----
-
 ## 📂 Repository Structure
 
 The notebooks are arranged according to the main experimental workflow.
@@ -462,19 +448,10 @@ If a formal open-source license is added later, the `LICENSE` file in the reposi
 
 ## 📬 Contact
 
-**Supervisor:**  
 Md. Alamgir Hossain
-Assistant Professor
-Department of Computer Science and Engineering
-State University of Bangladesh
-
-Research Director:
-Skill Morph Research Lab
-Skill Morph, Bangladesh
 
 Email: alamgir.cse14.just@gmail.com
 
-**Student Researchers:**  
 Jannatul Jinan
 
 Email: jannatuljinan24@gmail.com
