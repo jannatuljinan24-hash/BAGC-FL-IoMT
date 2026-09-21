@@ -1,0 +1,482 @@
+# BAGC-FL: A New Benign-Anchor Gradient-Correction-Oriented Federated Learning Approach for Medical IoT Intrusion Detection
+
+**Federated Learning, Non-IID Data, Class Imbalance, and Benign-Traffic Protection for IoMT Cybersecurity**
+
+This repository contains the source code and experimental notebooks developed for the thesis **“BAGC-FL: A New Benign-Anchor Gradient-Correction-Oriented Federated Learning Approach for Medical IoT Intrusion Detection.”** The study investigates machine learning (ML), deep learning (DL), and federated learning (FL) approaches for intrusion detection in Internet of Medical Things (IoMT) environments, with the main research focus on the effect of severe class imbalance and Non-IID client data on benign-traffic detection.
+
+The proposed **BAGC-FL** method extends standard FedAvg with a server-side **Benign-Anchor Gradient Correction** step. The objective is to reduce harmful aggregation effects on the minority benign class while preserving strong attack-detection performance.
+
+---
+
+## 📌 Overview
+
+The study follows a progressive experimental workflow:
+
+- Establish binary and multiclass machine-learning benchmarks.
+- Evaluate multiple deep-learning architectures for binary and multiclass intrusion detection.
+- Use a common CNN-LSTM-ResNet architecture for federated experiments.
+- Compare five established FL algorithms under both IID and controlled Non-IID partitions.
+- Investigate class imbalance through a strong benign-minority label-skew setting.
+- Compare FedAvg, Balanced FedAvg, and the proposed BAGC-FL method under identical experimental conditions.
+- Evaluate models using accuracy, class-wise metrics, Macro-F1, Weighted-F1, ROC-AUC, PR-AUC, confusion matrices, and validation behavior.
+- Apply statistical comparison and explainability techniques including SHAP and LIME.
+
+**Experimental pipeline:**
+
+`Raw IoMT traffic → preprocessing → binary/multiclass ML → binary/multiclass DL → shared 72/8/20 protocol → 5-client IID/Non-IID FL baselines → E0/E1/E2 comparison → statistical analysis → SHAP/LIME → final evaluation`
+
+---
+
+## 🎓 Thesis Information
+
+| Item | Information |
+|---|---|
+| **Title** | BAGC-FL: A New Benign-Anchor Gradient-Correction-Oriented Federated Learning Approach for Medical IoT Intrusion Detection |
+| **Students** | Jannatul Jinan (UG02-61-22-012) and Jannatul Ferdouse Shifa (UG02-61-22-040) |
+| **Department** | Department of Computer Science and Engineering |
+| **University** | State University of Bangladesh |
+| **Supervisor** | Md. Alamgir Hossain, Assistant Professor, Department of CSE |
+| **Primary Research Area** | Federated Learning for IoMT Intrusion Detection |
+| **Proposed Method** | BAGC-FL |
+
+---
+
+## 📂 Repository Structure
+
+The notebooks are arranged according to the main experimental workflow.
+
+| No. | File | Description |
+|---|---|---|
+| 01 | `notebooks/01_ML_Binary_Classification.ipynb` | Binary machine-learning experiments, including multiple classifiers, evaluation metrics, statistical testing, SHAP, and LIME. |
+| 02 | `notebooks/02_ML_Multiclass_Classification.ipynb` | Multiclass machine-learning experiments with model evaluation, statistical testing, SHAP, and LIME. |
+| 03 | `notebooks/03_DL_Binary_Classification.ipynb` | Binary deep-learning experiments using FNN, CNN, RNN, GRU, LSTM, CNN-LSTM, and CNN-LSTM-ResNet. It also creates the shared binary preprocessing artifacts required by the FL experiments. |
+| 04 | `notebooks/04_DL_Multiclass_Classification.ipynb` | Multiclass deep-learning experiments using FNN, CNN, Simple RNN, GRU, LSTM, CNN-LSTM, and CNN-LSTM-ResNet. |
+| 05 | `notebooks/05_FL_Baselines_IID_NonIID.ipynb` | Five-client federated-learning baseline experiments under IID and controlled Non-IID settings using FedAvg, FedSGD, FedProx, FedAdam, and FedDyn. |
+| 06 | `notebooks/06_BAGC_FL_Proposed_Method.ipynb` | Final proposed-method study comparing E0 FedAvg, E1 Balanced FedAvg, and E2 BAGC-FL under identical IID and Non-IID conditions, with statistical analysis and XAI. |
+| — | `README.md` | Repository documentation, setup information, execution order, and study overview. |
+
+> **Important:** Large datasets, trained models, prediction arrays, and generated experiment artifacts are intentionally not stored in this repository.
+
+---
+
+## 📊 Dataset
+
+The experiments use the **CIC-BCCC-NRC IoMT-2024** data contained within the broader **CIC-BCCC-NRC TabularIoTAttack-2024** collection.
+
+Official dataset information:  
+https://www.unb.ca/cic/datasets/tabular-iot-attack-2024.html
+
+The raw IoMT subset used by the notebooks contains **15 CSV files**, representing benign traffic and multiple attack scenarios, including DoS, DDoS, MQTT, reconnaissance, and MITM/ARP-spoofing traffic.
+
+### Dataset characteristics used in this study
+
+| Property | Value |
+|---|---|
+| Raw IoMT CSV files | 15 |
+| Raw columns per CSV | 85 |
+| Cleaned binary dataset | 3,247,366 samples |
+| Final predictive features | 79 |
+| Binary classes | Benign / Attack |
+| Multiclass task | 15 traffic classes |
+| Final data split | 72% training / 8% validation / 20% untouched test |
+| Random seed | 42 |
+| Scaling | `StandardScaler`, fitted only on the actual training partition |
+
+For the corrected binary protocol:
+
+| Split | Samples |
+|---|---:|
+| Actual training (72%) | 2,338,102 |
+| Validation (8%) | 259,790 |
+| Held-out test (20%) | 649,474 |
+
+The binary FL experiments reuse the exact validation indices and the exact scaler generated by the corrected binary DL preprocessing workflow. This prevents the FL notebooks from using a different split or preprocessing state.
+
+### Raw file examples
+
+The raw dataset folder contains files such as:
+
+- `Benign Traffic.csv`
+- `DDoS ICMP Flood.csv`
+- `DDoS UDP Flood.csv`
+- `DoS ICMP Flood.csv`
+- `DoS TCP Flood.csv`
+- `DoS UDP Flood.csv`
+- `MITM ARP Spoofing.csv`
+- `MQTT DDoS Publish Flood.csv`
+- `MQTT DoS Connect Flood.csv`
+- `MQTT DoS Publish Flood.csv`
+- `MQTT Malformed.csv`
+- `Recon OS Scan.csv`
+- `Recon Ping Sweep.csv`
+- `Recon Port Scan.csv`
+- `Recon Vulnerability Scan.csv`
+
+> The raw dataset is not included in this GitHub repository because of its size. Obtain the dataset from the official source and follow its terms of use.
+
+---
+
+## 🧠 Models and Experimental Design
+
+### Machine Learning
+
+The ML notebooks evaluate several conventional classifiers and ensemble methods. They also include statistical comparison and explainability analysis.
+
+Examples used in the notebooks include:
+
+- Decision Tree
+- Random Forest
+- Extra Trees
+- XGBoost
+- Logistic Regression
+- Gradient-boosting / ensemble configurations
+- Additional benchmark classifiers contained in the notebooks
+
+### Deep Learning
+
+The centralized DL experiments evaluate:
+
+- FNN
+- CNN
+- RNN / Simple RNN
+- GRU
+- LSTM
+- CNN-LSTM
+- CNN-LSTM-ResNet
+
+The **CNN-LSTM-ResNet** architecture is then used as the common model architecture for the federated-learning experiments.
+
+---
+
+## 🌐 Federated Learning Setup
+
+The main FL experiments use a controlled five-client configuration.
+
+| Parameter | Setting |
+|---|---|
+| Number of clients | 5 |
+| Clients per round | 5 |
+| Client participation | 100% |
+| Communication rounds | 20 |
+| Local epochs | 1 |
+| Local batch size | 2048 |
+| Main architecture | CNN-LSTM-ResNet |
+| Decision threshold | 0.50 |
+| Random seed | 42 |
+| Evaluation test set | Same untouched 20% test partition |
+
+### IID setting
+
+The IID experiment distributes the training data across five clients while maintaining approximately similar class proportions.
+
+### Controlled Non-IID setting
+
+The Non-IID experiment uses a **controlled strong minority-class label-skew** design. The benign-class allocation across the five clients is:
+
+`50% / 25% / 15% / 7% / 3%`
+
+Attack samples are distributed so that overall client sizes remain approximately balanced. This setting is designed to stress the aggregation process while keeping the experimental comparison controlled.
+
+### FL baselines
+
+The following baseline algorithms are evaluated:
+
+- FedAvg
+- FedSGD
+- FedProx
+- FedAdam
+- FedDyn
+
+All baseline experiments use the same general data protocol and common CNN-LSTM-ResNet architecture so that differences are attributable to the FL algorithm rather than changes in the underlying model.
+
+---
+
+## 🧩 Proposed BAGC-FL Method
+
+The final proposed-method notebook compares three configurations:
+
+| ID | Method | Local Loss | Server-Side Correction |
+|---|---|---|---|
+| **E0** | FedAvg | Binary cross-entropy | None |
+| **E1** | Balanced FedAvg | Globally weighted binary cross-entropy | None |
+| **E2** | **BAGC-FL (Proposed)** | Binary cross-entropy | **Benign-Anchor Gradient Correction** |
+
+### E2: BAGC-FL
+
+BAGC-FL retains the standard FedAvg training structure but introduces a server-side benign-anchor correction mechanism after aggregation.
+
+The method is designed to protect benign-class performance when aggregated client updates move the global model in a direction that is harmful to the benign minority class.
+
+The benign anchor is drawn from the shared validation split and therefore acts as a **trusted auxiliary server validation anchor**. The untouched final test set is not used for training, model selection, threshold selection, or feature selection.
+
+For reproducibility, the internal artifact name:
+
+`E2_AnchorFedAvg`
+
+is retained inside the notebook where required, while the thesis/paper-facing reporting name is:
+
+`E2_BAGC_FL`
+
+### Controlled comparison
+
+E0, E1, and E2 are evaluated with matched experimental conditions, including:
+
+- same model architecture
+- same initialization policy
+- same clients
+- same number of rounds
+- same local epochs
+- same batch size
+- same learning rate
+- same fixed decision threshold
+- same IID / Non-IID partitions
+- same untouched test set
+
+This controlled design helps isolate the effect of the proposed server-side correction.
+
+---
+
+## ⚙️ Requirements
+
+The project was developed primarily in **Google Colab** with GPU acceleration for the larger DL and FL experiments.
+
+A compatible Python 3 environment is required. The notebooks use the following main libraries:
+
+```bash
+pip install pandas numpy scipy statsmodels scikit-learn tensorflow matplotlib seaborn xgboost shap lime joblib jupyter
+```
+
+| Library | Main Purpose |
+|---|---|
+| `pandas`, `numpy` | Data loading, preprocessing, numerical operations |
+| `scikit-learn` | Splitting, scaling, ML models, metrics, ROC/PR analysis |
+| `tensorflow` / `keras` | Deep-learning and federated model training |
+| `xgboost` | XGBoost machine-learning experiments |
+| `scipy` | Statistical utilities |
+| `statsmodels` | McNemar/statistical comparison utilities |
+| `matplotlib`, `seaborn` | Figures and diagnostic visualizations |
+| `shap` | Global and local feature-contribution analysis |
+| `lime` | Local model explanations |
+| `joblib` | Saving/loading preprocessing objects such as the scaler |
+
+The FL notebook output records **TensorFlow 2.20.0** in the verified experimental environment. If a newer Colab runtime is used, ensure that the installed packages remain mutually compatible.
+
+---
+
+## ▶️ Usage
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/jannatuljinan24-hash/BAGC-FL-IoMT-Thesis.git
+cd BAGC-FL-IoMT-Thesis
+```
+
+### 2. Prepare the dataset
+
+Download the required IoMT dataset from the official dataset provider and place the CSV files in Google Drive or another accessible directory.
+
+The original notebooks use paths such as:
+
+```text
+/content/drive/MyDrive/cybersecurity-2024
+/content/drive/MyDrive/IoMT_Thesis_2024
+```
+
+If your folder structure is different, update the path variables near the beginning of the relevant notebooks.
+
+### 3. Recommended execution order
+
+For the complete workflow, run the notebooks in numerical order:
+
+```text
+01_ML_Binary_Classification.ipynb
+        ↓
+02_ML_Multiclass_Classification.ipynb
+        ↓
+03_DL_Binary_Classification.ipynb
+        ↓
+04_DL_Multiclass_Classification.ipynb
+        ↓
+05_FL_Baselines_IID_NonIID.ipynb
+        ↓
+06_BAGC_FL_Proposed_Method.ipynb
+```
+
+The ML and multiclass DL notebooks can be studied independently. However, for the **binary FL workflow**, `03_DL_Binary_Classification.ipynb` is especially important because it creates the shared preprocessing metadata used later by the federated experiments.
+
+### 4. Shared binary preprocessing artifacts
+
+Before running the FL experiments, confirm that the following files have been created by the corrected binary DL preprocessing stage:
+
+```text
+IoMT_Thesis_2024/
+└── binary_dl_preprocessed/
+    ├── validation_indices.npy
+    ├── StandardScaler.joblib
+    ├── feature_names.npy
+    └── protocol_manifest.json
+```
+
+The FL notebooks verify these artifacts before continuing.
+
+### 5. Run the FL notebooks
+
+Open the FL notebooks in Google Colab, mount Google Drive, verify the path configuration, and run the cells in order.
+
+The FL code includes configuration checks and checkpoint/restart logic so that completed or partially completed experiments are not accidentally overwritten with inconsistent settings.
+
+---
+
+## 💾 Generated Outputs
+
+Depending on the notebook, execution can generate:
+
+- cleaned train/test CSV files
+- preprocessing metadata
+- validation-index files
+- `StandardScaler` artifacts
+- feature-name files
+- protocol manifests
+- trained `.keras` models
+- training checkpoints
+- FL client partitions
+- per-round training histories
+- final metric CSV files
+- prediction arrays
+- classification reports
+- confusion matrices
+- ROC curves
+- precision-recall curves
+- training/validation loss figures
+- statistical comparison tables
+- McNemar-test outputs
+- SHAP explanations
+- LIME explanations
+- methodological audit files
+
+Large generated artifacts are intentionally excluded from the GitHub repository and can be reproduced by executing the notebooks with the required dataset and path configuration.
+
+---
+
+## 🔁 Reproducibility Notes
+
+Several safeguards are included to improve experimental reproducibility:
+
+- Global random seed fixed at `42`.
+- A fixed 72/8/20 train-validation-test protocol is used.
+- The `StandardScaler` is fitted only on the actual 72% training partition.
+- The validation and held-out test partitions are transformed using the training-fitted scaler.
+- The same frozen test set is used for final FL comparisons.
+- Five clients and 20 communication rounds are maintained across the main FL comparisons.
+- Full client participation is used in the five-client experiments.
+- E0, E1, and E2 use matched experimental conditions.
+- FL configuration files are checked before resuming an existing experiment.
+- Saved model/checkpoint artifacts are verified before reuse.
+- XAI is performed only after final evaluation on a small stratified subset and is not used to train or select the final models.
+- Statistical comparisons are included to support interpretation beyond a single performance metric.
+
+---
+
+## 📈 Summary of Findings
+
+The repository supports the following main experimental conclusions and analyses:
+
+- The cleaned IoMT dataset is extremely imbalanced, with benign traffic forming a small minority of the binary samples.
+- Centralized ML and DL experiments provide reference benchmarks before the federated experiments.
+- The FL baseline study compares FedAvg, FedSGD, FedProx, FedAdam, and FedDyn under both IID and controlled Non-IID settings.
+- In the saved five-algorithm baseline comparison, **FedAvg produced the highest Macro-F1 among the evaluated baselines** under both the IID and controlled Non-IID configurations.
+- The proposed-method study evaluates whether server-side benign-anchor correction can improve minority benign-class behavior without changing the underlying FL client architecture or final test set.
+- E0, E1, and E2 are evaluated using identical experimental conditions so that the contribution of balancing and benign-anchor correction can be studied directly.
+- Final interpretation includes class-wise benign metrics, overall metrics, confidence/statistical comparison, and SHAP/LIME explainability rather than relying on accuracy alone.
+
+> Because the dataset is highly imbalanced, **Macro-F1 and benign-class precision/recall/F1 are particularly important** for interpreting results. Very high overall accuracy alone can hide poor minority-class behavior.
+
+---
+
+## 🔍 Explainability
+
+The project includes both **SHAP** and **LIME** analysis.
+
+- **SHAP** is used to examine the magnitude and direction of feature contributions.
+- **LIME** is used to provide local explanations for selected correctly classified examples.
+- In the final BAGC-FL study, XAI is performed after the final model evaluation and does not influence training or model selection.
+
+This supports a more interpretable analysis of how the models make benign-versus-attack decisions.
+
+---
+
+## 📐 Statistical Analysis
+
+The notebooks include statistical comparison procedures to complement raw performance metrics.
+
+Examples include:
+
+- McNemar-based model comparison
+- multiple-comparison correction where applicable
+- paired comparison procedures in the final E0/E1/E2 analysis
+- confidence-interval-based interpretation
+
+These analyses are intended to reduce reliance on isolated metric differences when comparing competing models.
+
+---
+
+## 🔒 Data and Research Ethics
+
+This repository contains analysis code and experimental notebooks. It does not include the original large IoMT dataset or personal participant data.
+
+The IoMT network-traffic dataset was obtained from an external cybersecurity dataset provider. Users of this repository should obtain the dataset from the official source and follow the provider's terms, citation requirements, and applicable institutional research policies.
+
+---
+
+## 📝 Citation
+
+If you use this repository, experimental workflow, or BAGC-FL implementation in academic work, please cite the thesis and repository appropriately.
+
+Example BibTeX entry:
+
+```bibtex
+@misc{jinan_shifa_bagcfl_2026,
+  author       = {Jannatul Jinan and Jannatul Ferdouse Shifa},
+  title        = {BAGC-FL: A New Benign-Anchor Gradient-Correction-Oriented
+                  Federated Learning Approach for Medical IoT Intrusion Detection},
+  year         = {2026},
+  institution  = {State University of Bangladesh},
+  note         = {Undergraduate thesis, Department of Computer Science and Engineering}
+}
+```
+
+Dataset users should also cite the original **CIC-BCCC-NRC TabularIoTAttack-2024 / IoMT-2024** source as required by the dataset provider.
+
+---
+
+## 📄 License
+
+This repository currently does **not** include a separate open-source `LICENSE` file.
+
+The code and research materials are shared for academic review, reproducibility, and educational purposes. If you intend to redistribute, modify, or reuse substantial portions of the code beyond normal academic citation, please contact the authors or thesis supervisor and follow any applicable university or dataset-provider requirements.
+
+If a formal open-source license is added later, the `LICENSE` file in the repository will take precedence over this note.
+
+---
+
+## 📬 Contact
+
+**Supervisor:**  
+Md. Alamgir Hossain  
+Assistant Professor  
+Department of Computer Science and Engineering  
+State University of Bangladesh
+
+**Student Researchers:**  
+Jannatul Jinan  
+Jannatul Ferdouse Shifa
+
+**Repository:**  
+https://github.com/jannatuljinan24-hash/BAGC-FL-IoMT-Thesis
+
+---
+
+## Acknowledgment
+
+This repository was prepared as part of an undergraduate thesis in the Department of Computer Science and Engineering, State University of Bangladesh. The authors acknowledge the thesis supervisor and the organizations responsible for making the IoMT cybersecurity dataset available for academic research.
