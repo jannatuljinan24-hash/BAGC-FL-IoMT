@@ -448,15 +448,15 @@ If a formal open-source license is added later, the `LICENSE` file in the reposi
 
 ## 📬 Contact
 
-*Md. Alamgir Hossain*
+**Md. Alamgir Hossain** 
 
 Email: alamgir.cse14.just@gmail.com
 
-*Jannatul Jinan*
+**Jannatul Jinan** 
 
 Email: jannatuljinan24@gmail.com
 
-*Jannatul Ferdouse Shifa*
+**Jannatul Ferdouse Shifa** 
 
 Email: jannatulshifa067@gmail.com
 
