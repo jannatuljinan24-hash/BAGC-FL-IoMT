@@ -463,14 +463,23 @@ If a formal open-source license is added later, the `LICENSE` file in the reposi
 ## 📬 Contact
 
 **Supervisor:**  
-Md. Alamgir Hossain  
-Assistant Professor  
-Department of Computer Science and Engineering  
+Md. Alamgir Hossain
+Assistant Professor
+Department of Computer Science and Engineering
 State University of Bangladesh
 
+Research Director:
+Skill Morph Research Lab
+Skill Morph, Bangladesh
+
+Email: alamgir.cse14.just@gmail.com
+
 **Student Researchers:**  
-Jannatul Jinan  
+Jannatul Jinan
+Email: jannatuljinan24@gmail.com
+
 Jannatul Ferdouse Shifa
+Email: jannatulshifa067@gmail.com
 
 **Repository:**  
 https://github.com/jannatuljinan24-hash/BAGC-FL-IoMT-Thesis
